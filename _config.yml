@@ -10,7 +10,7 @@
 ############################
 
 # Name of website
-title: GitHub Pages - l3ickey
+title: l3ickey's blog page
 
 # Your name to show in the footer
 author: l3ickey
@@ -20,11 +20,12 @@ author: l3ickey
 ###############################################
 
 navbar-links:
-  About Me: "aboutme"
+  #  About Me: "aboutme"
+  Whoami: "whoami"
   Resources:
-    - Beautiful Jekyll: "https://beautifuljekyll.com"
-    - Learn markdown: "https://www.markdowntutorial.com/"
-  Author's home: "https://deanattali.com"
+    - GitHub: "https://github.com/l3ickey/"
+    - Twitter: "https://twitter.com/l3ickey/"
+  #  Author's home: "https://deanattali.com"
 
 ################
 # --- Logo --- #
@@ -49,7 +50,7 @@ round-avatar: true
 # Select the social network links that you want to show in the footer.
 # Uncomment the links you want to show and add your information to each one.
 social-network-links:
-  email: "l3ickey[あっと]gmail[どっと]com"
+  email: "l3ickey[at]gmail[dot]com"
 #  rss: true  # remove this line if you don't want to show an RSS link at the bottom
 #  facebook: deanattali
   github: l3ickey
