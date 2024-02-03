@@ -1,3 +1,10 @@
+---
+layout: post
+title: Markdown sample
+subtitle: Check the markdown style!
+tags: [markdown, test]
+---
+
 # Markdown
 
 ## Headers 見出し
