@@ -34,4 +34,4 @@ subtitle: l3ickey
 
 - [𝕏 (Twitter)](https://twitter.com/l3ickey)
 - [GitHub](https://github.com/l3ickey)
-- [Hack The Box](https://app.hackthebox.com/profile/#678402)
+- [Hack The Box](https://app.hackthebox.com/users/678402)
