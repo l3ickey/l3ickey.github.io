@@ -6,13 +6,13 @@ subtitle: l3ickey
 
 ## Profile
 
-<img src="assets/img/avatar-icon.JPG" alt="icon" style="zoom:25%;" />
+<img src="/assets/img/avatar-icon.JPG" alt="icon" style="zoom:25%;" />
 
-Name: Keisuke Funabiki
+**Name:** Keisuke Funabiki
 
-Handle name: l3ickey
+**Handle name:** l3ickey
 
-Birthday: December 27, 1999
+**Birthday:** December 27, 1999
 
 ## Qualifications
 
