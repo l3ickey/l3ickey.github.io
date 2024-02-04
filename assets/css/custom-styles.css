@@ -2,6 +2,8 @@
 layout: null
 ---
 
-*, ::after, ::before {
-    box-sizing: content-box;
+@media (min-width: 1200px) {
+    *, ::after, ::before {
+        box-sizing: content-box;
+    }
 }
