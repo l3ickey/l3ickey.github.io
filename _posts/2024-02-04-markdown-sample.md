@@ -5,8 +5,6 @@ subtitle: Check the markdown style!
 tags: [markdown, test]
 ---
 
-# Markdown
-
 ## Headers 見出し
 
 先頭に`#`をレベルの数だけ記述します。
@@ -52,7 +50,7 @@ piyo
 ```
 
 hoge
-fuga
+fuga  
 piyo
 
 ## Blockquotes 引用
@@ -85,6 +83,24 @@ print("Hello world!")
 ```python
 print("Hello world!")
 ```
+
+行番号を付ける場合は特殊な記法になります。
+
+````
+{% highlight javascript linenos %}
+var foo = function(x) {
+  return(x + 5);
+}
+foo(3)
+{% endhighlight %}
+````
+
+{% highlight javascript linenos %}
+var foo = function(x) {
+  return(x + 5);
+}
+foo(3)
+{% endhighlight %}
 
 ### インラインコード
 
@@ -212,11 +228,11 @@ hoge
 URLが長くて読みづらくなる場合や同じリンクを何度も使用する場合は、リンク先への参照を定義できます。
 
 ```
-[Google]: http://www.yahoo.co.jp
+[Google]: http://www.google.co.jp
 [Googleを見る][Google]
 ```
 
-[Google]: http://www.yahoo.co.jp
+[Google]: http://www.google.co.jp
 [Googleを見る][Google]
 
 ## 強調
@@ -266,6 +282,40 @@ URLが長くて読みづらくなる場合や同じリンクを何度も使用�
 
 ~~取り消し文字列~~
 
+## Boxes ボックス
+
+ボックスに色を付けてわかりやすく表示します。
+
+### 備考
+
+```
+{: .box-note}
+**Note:** This is a notification box.
+```
+
+{: .box-note}
+**Note:** This is a notification box.
+
+### 注意
+
+```
+{: .box-warning}
+**Warning:** This is a warning box.
+```
+
+{: .box-warning}
+**Warning:** This is a warning box.
+
+### エラー
+
+```
+{: .box-error}
+**Error:** This is an error box.
+```
+
+{: .box-error}
+**Error:** This is an error box.
+
 ## Images 画像
 
 先頭の`!`で画像の<img>と認識されます。画像の大きさなどの指定をする場合はimgタグを使用します。
@@ -273,8 +323,10 @@ URLが長くて読みづらくなる場合や同じリンクを何度も使用�
 ```
 ![alt](画像URL)
 ![代替文字列](URL "タイトル")
+![中央揃え](画像URL){: .mx-auto.d-block :}
 
-<img src="attach:cat.jpg" alt="attach:cat" title="attach:cat" width="200" height="200">
+<img src="cat.jpg" alt="cat" title="cat" width="200" height="200">
+<img src="cat.jpg" alt="cat" title="cat" style="zoom:25%;">
 ```
 
 ## Table 表
