@@ -86,14 +86,14 @@ print("Hello world!")
 
 行番号を付ける場合は特殊な記法になります。
 
-````
+```
 {% highlight javascript linenos %}
 var foo = function(x) {
   return(x + 5);
 }
 foo(3)
 {% endhighlight %}
-````
+```
 
 {% highlight javascript linenos %}
 var foo = function(x) {
