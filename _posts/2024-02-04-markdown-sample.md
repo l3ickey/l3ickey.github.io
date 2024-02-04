@@ -85,14 +85,15 @@ print("Hello world!")
 ```
 
 行番号を付ける場合は特殊な記法になります。
+表示のため`{`, `%`, `}` をエスケープ処理していますが、実際は不要です。
 
 ```
-{% highlight javascript linenos %}
+\{\% highlight javascript linenos \%\}
 var foo = function(x) {
   return(x + 5);
 }
 foo(3)
-{% endhighlight %}
+\{\% endhighlight \%\}
 ```
 
 {% highlight javascript linenos %}
