@@ -173,7 +173,7 @@ ansible-galaxy install -y requirements.yml
 {: .box-warning}
 **Warning:** Python は 3.8 以上、ansible-core は 2.12.6 である必要があります。
 
-goad.sh を使ってプロビジョニングを実行します。私の環境ではビルドが完了するまでに79分55秒掛かりました。気長に待ちましょう☕
+goad.sh を使ってプロビジョニングを実行します。私の環境ではビルドが完了するまでに79分55秒掛かりました。気長に待ちましょう
 
 ```bash
 cd ../
