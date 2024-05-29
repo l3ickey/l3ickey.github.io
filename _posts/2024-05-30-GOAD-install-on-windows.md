@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Settig Up a GOAD Environment on a Windows Host
+title: WindowsホストでGOAD環境を作ってみた
 subtitle: ペンテスターの遊び場
 tags: [active directory, goad]
 ---
