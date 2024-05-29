@@ -2,7 +2,7 @@
 layout: post
 title: Markdown sample
 subtitle: Check the markdown style!
-tags: [markdown, test]
+tags: [markdown]
 ---
 
 ## Headers 見出し
