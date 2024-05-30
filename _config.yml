@@ -289,6 +289,9 @@ plugins:
   - jekyll-sitemap
   - custom_excerpt
 
+# Disable safe mode to load _plugin/custom_excerpt.rb
+safe: false
+
 # Beautiful Jekyll / Dean Attali
 # 2fc73a3a967e97599c9763d05e564189
 
