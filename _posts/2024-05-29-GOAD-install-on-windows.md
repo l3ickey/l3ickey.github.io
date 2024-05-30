@@ -7,6 +7,10 @@ tags: [active directory, goad]
 
 ## Game of Active Directory (GOAD)
 
+![logo_GOAD.png](https://l3ickey.github.io/assets/img/typora-images/logo_GOAD.png){: .mx-auto.d-block :}
+
+> GOAD のロゴ (https://github.com/Orange-Cyberdefense/GOAD/blob/main/docs/img/logo_GOAD.png)
+
 [GOAD](https://github.com/Orange-Cyberdefense/GOAD) はペンテスト用の Active Directory ラボプロジェクトです。このラボの目的は、ペンテスターに一般的な攻撃手法を練習するための脆弱な Active Directory 環境を提供することです。
 
 [GOAD に含まれている脆弱性](https://github.com/Orange-Cyberdefense/GOAD?tab=readme-ov-file#road-map)は 2024/05/30 現在で45個あり、例として PTH, Zerologon, Kerberoasting, Ntlm relay, Constrained delegation などがあります。
@@ -14,8 +18,23 @@ tags: [active directory, goad]
 GOAD プロジェクトには4種類のラボ環境があり、それぞれの構成は以下の通りです。
 
 - GOAD：5つのVM（2フォレスト、3ドメイン）から成る完全な GOAD ラボ
+
+![GOAD_schema.png](https://l3ickey.github.io/assets/img/typora-images/GOAD_schema.png){: .mx-auto.d-block :}
+
+> GOAD の構成図 (https://github.com/Orange-Cyberdefense/GOAD/blob/main/docs/img/GOAD_schema.png)
+
 - GOAD-Light：3つのVM（1フォレスト、2ドメイン）かる成る小規模 PC 向けのライト GOAD ラボ
+
+![GOAD-Light_schema.png](https://l3ickey.github.io/assets/img/typora-images/GOAD-Light_schema.png){: .mx-auto.d-block :}
+
+> GOAD-Light の構成図 (https://github.com/Orange-Cyberdefense/GOAD/blob/main/docs/img/GOAD-Light_schema.png)
+
 - SCCM：4つのVM（1フォレスト、1ドメイン）から成る Microsoft Configuration Manager がインストール済みのラボ
+
+![SCCMLAB_overview.png](https://l3ickey.github.io/assets/img/typora-images/SCCMLAB_overview.png){: .mx-auto.d-block :}
+
+> SCCM の構成図 (https://github.com/Orange-Cyberdefense/GOAD/blob/main/docs/img/SCCMLAB_overview.png)
+
 - NHA：5つのVM（2ドメイン）から成るスキーマが提供されていないチャレンジラボ
 
 私は複数フォレスト環境で遊んでみたかったので、今回は GOAD ラボを選択しました。
@@ -103,7 +122,7 @@ vagrant up
 ![image-20240530024304717](https://l3ickey.github.io/assets/img/typora-images/image-20240530024304717.png){: .mx-auto.d-block :}
 
 {: .box-note}
-**Note:** ラボ構築で発生する場合は [Troubleshooting](https://github.com/Orange-Cyberdefense/GOAD/blob/main/docs/troubleshoot.md) を確認すると解決法が見つかるかもしれません。
+**Note:** ラボ構築でエラーが発生する場合は [Troubleshooting](https://github.com/Orange-Cyberdefense/GOAD/blob/main/docs/troubleshoot.md) を確認すると解決法が見つかるかもしれません。
 
 全ての VM が作成されたら VMware から 編集 > 仮想ネットワーク エディタ... を開き、サブネットアドレスが 192.168.56.0 になっている仮想ネットワークの名前をメモしておきます。
 
@@ -123,13 +142,13 @@ VMware から ホーム > 新規仮想マシンの作成 を開き、構成の�
 
 ![image-20240530041444830](https://l3ickey.github.io/assets/img/typora-images/image-20240530041444830.png){: .mx-auto.d-block :}
 
-Ubuntu のインストーラーが起動したら指示に従って Ubuntu をインストールします。Ansible が動けば良いので Minimal Ubuntu を選択しました。
+Ubuntu のインストーラーが起動したら指示に従って Ubuntu をインストールします。Ansible が動けば良いので Minimal Ubuntu のインストールを選択しました。
 
 Ubuntu のインストールが完了したら、VMware からUbuntu 22.04.4 LTS を右クリックし、設定... > ハードウェア > 追加... > ネットワークアダプタ > 完了 でネットワークアダプタを追加します。追加したネットワークアダプタは カスタム を選択し、メモした GOAD ラボの仮想ネットワークを指定します。
 
 ![image-20240530042942706](https://l3ickey.github.io/assets/img/typora-images/image-20240530042942706.png){: .mx-auto.d-block :}
 
-ネットワークアダプタが追加されたら Ubuntu の設定を開き、Network > 歯車アイコン > IPv4 からIPアドレスを割り当てます。この際に GOAD VM とIPアドレスが被っていないことを確認してください。
+ネットワークアダプタが追加されたら Ubuntu の設定アプリを開き、Network > 歯車アイコン > IPv4 からIPアドレスを割り当てます。この際に GOAD VM とIPアドレスが被っていないことを確認してください。
 
 ![image-20240530043719917](https://l3ickey.github.io/assets/img/typora-images/image-20240530043719917.png){: .mx-auto.d-block :}
 
@@ -182,7 +201,7 @@ cd ../
 
 ![image-20240529105435969](https://l3ickey.github.io/assets/img/typora-images/image-20240529105435969.png){: .mx-auto.d-block :}
 
-エラーが発生した場合は [Troubleshooting](https://github.com/Orange-Cyberdefense/GOAD/blob/main/docs/troubleshoot.md) などでエラーを解決し、エラーが発生しなくなるまで goad.sh を実行します。下記のコマンドのように特定のプロビジョニングのみを行うことも可能です。
+エラーが発生する場合は [Troubleshooting](https://github.com/Orange-Cyberdefense/GOAD/blob/main/docs/troubleshoot.md) などでエラーを解決し、エラーが発生しなくなるまで goad.sh を実行します。下記のコマンドのように、特定のプロビジョニングのみを行うことも可能です。
 
 ```bash
 ansible-playbook -i ../ad/GOAD/data/inventory -i ../ad/GOAD/providers/vmware/inventory ad-child_domain.yml
