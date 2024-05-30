@@ -2,5 +2,7 @@
 
 source "https://rubygems.org"
 
+gem "custom_excerpt"
+
 gemspec
 
