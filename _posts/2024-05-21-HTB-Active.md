@@ -5,6 +5,8 @@ subtitle: Active Directory Enumeration and Exploitation
 tags: [htb, windows, easy]
 ---
 
+Active は Active Directory の列挙と悪用が学べる良いマシンだったので、Write-up を書いてみました。
+
 ## 列挙
 
 ### ポートスキャン
