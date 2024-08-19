@@ -3,6 +3,7 @@ layout: null
 ---
 
 @import url("pygment_highlights.css");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap");
 
 :root {
   /* config file CSS variables */
@@ -19,7 +20,7 @@ layout: null
   --footer-hover-col: {{ site.footer-hover-col | default: "#0085A1" }};
 
   /* common CSS variables */
-  --body-font: 'Lora', 'Times New Roman', serif;
+  --body-font: 'Noto Sans JP', 'Lora', 'Times New Roman', serif;
   --header-font: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
   --mid-col: #808080;
 }
