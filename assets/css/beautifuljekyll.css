@@ -33,7 +33,7 @@ html {
 
 body {
   font-family: var(--body-font);
-  font-size: 1.125rem;
+  font-size: 1.08rem;
   color: var(--text-col);
   position: relative;
   background-color: var(--page-col);
@@ -50,7 +50,7 @@ body > main {
   flex: 1;
 }
 p {
-  line-height: 1.5;
+  line-height: 1.65;
   margin: 1.875rem 0;
 }
 h1,h2,h3,h4,h5,h6 {
