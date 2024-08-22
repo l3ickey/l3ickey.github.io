@@ -16,6 +16,9 @@ subtitle: l3ickey
 
 ## Qualifications
 
+- Certified Red Team Professional (CRTP)
+  - Certification Date: August 2024
+  - Student ID: [ADLID9377](https://www.credential.net/a3980590-5371-42bd-bb9b-29c766d69da)
 - OffSec Certified Professional (OSCP)
   - Certification Date: January 2024
   - Certification Number: [93186766](https://www.credential.net/cc43346b-0593-4479-976c-533b779ddb77)
